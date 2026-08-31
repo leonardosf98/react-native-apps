@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Loja Pulse",
+    "slug": "loja-pulse",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#0f172a"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0f172a"
+      }
+    },
+    "plugins": [
+      "expo-asset"
+    ]
+  }
+}
