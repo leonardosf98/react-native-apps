@@ -8,6 +8,7 @@ Repositório com coleção de projetos em React Native.
 |---|------|-------|
 | 01 | Meu Perfil Profissional | [app-01-meu-perfil-profissional](./app-01-meu-perfil-profissional) |
 | 02 | Loja Pulse | [app-02-loja-pulse](./app-02-loja-pulse) |
+| final | Aether Desk (help desk) | [app-final](./app-final) |
 
 ## Como rodar um app
 
