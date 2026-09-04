@@ -1,4 +1,4 @@
-export const PRODUCTION_API_URL = "https://aether-desk-api.vercel.app";
+export const PRODUCTION_API_URL = "https://react-native-apps.vercel.app";
 
 export const API_URL = process.env.EXPO_PUBLIC_API_URL || PRODUCTION_API_URL;
 

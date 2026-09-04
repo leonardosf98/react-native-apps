@@ -6,7 +6,7 @@ Empresa fictícia com placeholders em `mobile/company.js` e `api/src/company.js`
 
 ## Como rodar
 
-No **iPhone**, `localhost` é o próprio aparelho. O app aponta para a API na Vercel (`https://aether-desk-api.vercel.app`). O Metro usa túnel (`npm start`) para o Expo Go carregar o JS.
+No **iPhone**, `localhost` é o próprio aparelho. O app aponta para a API na Vercel (`https://react-native-apps.vercel.app`). O Metro usa túnel (`npm start`) para o Expo Go carregar o JS.
 
 ```bash
 cd app-final/mobile
