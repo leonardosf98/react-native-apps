@@ -1,28 +1,22 @@
-import { argon2id, argon2Verify } from "hash-wasm";
+import { pbkdf2, randomBytes, timingSafeEqual } from "node:crypto";
+import { promisify } from "node:util";
 
-const OPTIONS = {
-  parallelism: 1,
-  iterations: 1,
-  memorySize: 8,
-  hashLength: 32,
-  outputType: "encoded",
-};
+const pbkdf2Async = promisify(pbkdf2);
+const ROUNDS = 10000;
+const KEYLEN = 32;
 
-function randomSalt() {
-  return crypto.getRandomValues(new Uint8Array(16));
+export async function hashPassword(plain) {
+  const salt = randomBytes(16);
+  const hash = await pbkdf2Async(String(plain), salt, ROUNDS, KEYLEN, "sha256");
+  return `pbkdf2$${salt.toString("hex")}$${hash.toString("hex")}`;
 }
 
-export function hashPassword(plain) {
-  return argon2id({
-    ...OPTIONS,
-    password: String(plain),
-    salt: randomSalt(),
-  });
-}
-
-export function verifyPassword(hashed, plain) {
-  return argon2Verify({
-    password: String(plain),
-    hash: String(hashed),
-  });
+export async function verifyPassword(stored, plain) {
+  const parts = String(stored).split("$");
+  if (parts.length !== 3 || parts[0] !== "pbkdf2") return false;
+  const salt = Buffer.from(parts[1], "hex");
+  const expected = Buffer.from(parts[2], "hex");
+  if (expected.length !== KEYLEN) return false;
+  const actual = await pbkdf2Async(String(plain), salt, ROUNDS, KEYLEN, "sha256");
+  return timingSafeEqual(expected, actual);
 }
