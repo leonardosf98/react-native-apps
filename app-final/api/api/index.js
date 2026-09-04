@@ -1,6 +1,18 @@
 import { handle } from "@hono/node-server/vercel";
 import { createApp } from "../src/app.js";
 
-const app = await createApp();
+export const config = { maxDuration: 30 };
 
-export default handle(app);
+let handlerPromise;
+
+function getHandler() {
+  if (!handlerPromise) {
+    handlerPromise = createApp().then((app) => handle(app));
+  }
+  return handlerPromise;
+}
+
+export default async function handler(req, res) {
+  const h = await getHandler();
+  return h(req, res);
+}

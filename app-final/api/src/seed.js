@@ -9,6 +9,8 @@ export const DEMO_USERS = [
     name: "Marina Alves",
     email: "admin@aether.desk",
     password: "Admin#123",
+    passwordHash:
+      "$argon2id$v=19$m=19456,t=2,p=1$Jdo1hbdpFNqvu3p/JHvJdw$9/hJzdk8d05i+aK80eRe/i056Qx34z6iZf3qZtbOesw",
     role: "admin",
   },
   {
@@ -16,6 +18,8 @@ export const DEMO_USERS = [
     name: "Caio Ferreira",
     email: "agente@aether.desk",
     password: "Agente#123",
+    passwordHash:
+      "$argon2id$v=19$m=19456,t=2,p=1$cqgNso2ZwiGs/44++DD7VQ$1tLZQ176cQD6tNJg+UNlb59EB4qQtTPUpS2KxNwLgJQ",
     role: "atendente",
   },
   {
@@ -23,6 +27,8 @@ export const DEMO_USERS = [
     name: "Helena Costa",
     email: "cliente@aether.desk",
     password: "Cliente#123",
+    passwordHash:
+      "$argon2id$v=19$m=19456,t=2,p=1$zMFfVtcKvQbeOS8Nfw23jQ$ALbGevERRqGMVxeq1nz/Z0p1ZTZ954y3yaxWEws5shc",
     role: "cliente",
   },
 ];
@@ -30,7 +36,7 @@ export const DEMO_USERS = [
 export async function seedUsers(db) {
   const stamp = nowIso();
   for (const user of DEMO_USERS) {
-    const passwordHash = await hashPassword(user.password);
+    const passwordHash = user.passwordHash || (await hashPassword(user.password));
     await db.execute({
       sql: `INSERT INTO users (id, name, email, password_hash, role, active, created_at, updated_at)
             VALUES (?, ?, ?, ?, ?, 1, ?, ?)
