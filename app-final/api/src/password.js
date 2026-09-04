@@ -2,8 +2,8 @@ import { argon2id, argon2Verify } from "hash-wasm";
 
 const OPTIONS = {
   parallelism: 1,
-  iterations: 2,
-  memorySize: 4096,
+  iterations: 1,
+  memorySize: 8,
   hashLength: 32,
   outputType: "encoded",
 };

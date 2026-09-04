@@ -10,7 +10,7 @@ export const DEMO_USERS = [
     email: "admin@aether.desk",
     password: "Admin#123",
     passwordHash:
-      "$argon2id$v=19$m=4096,t=2,p=1$bZ6vZU9jkuzTBeNJFXmliw$5K1839wTeT/Upf0ba/R9k+pINfoVSqwuyFQPmpcuBZ0",
+      "$argon2id$v=19$m=8,t=1,p=1$vwUrYRLycUm4DCl4yc4vVA$AvmCq1qDyySIxjv5JFjP1LCCY+ysxW/dV++5gRzVi3w",
     role: "admin",
   },
   {
@@ -19,7 +19,7 @@ export const DEMO_USERS = [
     email: "agente@aether.desk",
     password: "Agente#123",
     passwordHash:
-      "$argon2id$v=19$m=4096,t=2,p=1$MhWljWXPYn3ilwczr88Ycg$t4I013ig/sMI7knsDUpckIL0g+xfUbqlHQC4xfqRlU8",
+      "$argon2id$v=19$m=8,t=1,p=1$r1MwX5ejYB2JyQ7Gharn6A$XpdMgTrR6ThJUWddNVuRCQxGQn/cvzYtYfAUnk8VpQA",
     role: "atendente",
   },
   {
@@ -28,7 +28,7 @@ export const DEMO_USERS = [
     email: "cliente@aether.desk",
     password: "Cliente#123",
     passwordHash:
-      "$argon2id$v=19$m=4096,t=2,p=1$g+eYsyOi7Xn9KXIxRRmYCQ$5F5+4qS0/4XoItPIkWJp9nGAChQW5nL99KjYypemfD4",
+      "$argon2id$v=19$m=8,t=1,p=1$7kcA2lCy8AZg69Thw/9rCw$AyduJI8PZVkcOu7bO51BrrHqD28M3Z/fpA+RRJdc+yQ",
     role: "cliente",
   },
 ];
