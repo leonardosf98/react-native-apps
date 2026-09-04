@@ -1,27 +1,44 @@
 import { mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
+import { DatabaseSync } from "node:sqlite";
 import { fileURLToPath } from "node:url";
-import { createClient } from "@libsql/client";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const defaultFile = join(here, "..", "data", "aether.db");
 
-function defaultUrl() {
-  if (process.env.DATABASE_URL) return process.env.DATABASE_URL;
-  if (process.env.VERCEL) return "file:/tmp/aether.db";
-  return `file://${defaultFile}`;
+function dbPath() {
+  if (process.env.VERCEL) return ":memory:";
+  if (process.env.DATABASE_URL?.startsWith("file:")) {
+    return process.env.DATABASE_URL.replace(/^file:\/\//, "").replace(/^file:/, "");
+  }
+  return defaultFile;
+}
+
+function wrap(sqlite) {
+  return {
+    async execute(query) {
+      const sql = typeof query === "string" ? query : query.sql;
+      const args = typeof query === "string" ? [] : query.args ?? [];
+      const head = sql.trim().slice(0, 12).toUpperCase();
+      if (head.startsWith("SELECT") || head.startsWith("WITH ")) {
+        return { rows: sqlite.prepare(sql).all(...args) };
+      }
+      if (head.startsWith("CREATE")) {
+        sqlite.exec(sql);
+        return { rows: [], rowsAffected: 0 };
+      }
+      const result = sqlite.prepare(sql).run(...args);
+      return { rows: [], rowsAffected: result.changes };
+    },
+  };
 }
 
 export function createDb() {
-  const url = defaultUrl();
-  if (url.startsWith("file:")) {
-    const path = url.replace(/^file:\/\//, "").replace(/^file:/, "");
+  const path = dbPath();
+  if (path !== ":memory:") {
     mkdirSync(dirname(path), { recursive: true });
   }
-  return createClient({
-    url,
-    authToken: process.env.DATABASE_AUTH_TOKEN || undefined,
-  });
+  return wrap(new DatabaseSync(path));
 }
 
 export async function migrate(db) {
