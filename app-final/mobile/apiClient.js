@@ -1,10 +1,6 @@
-import { Platform } from "react-native";
+export const PRODUCTION_API_URL = "https://aether-desk-api.vercel.app";
 
-const LAN = process.env.EXPO_PUBLIC_API_URL;
-
-export const API_URL =
-  LAN ||
-  (Platform.OS === "android" ? "http://10.0.2.2:3001" : "http://localhost:3001");
+export const API_URL = process.env.EXPO_PUBLIC_API_URL || PRODUCTION_API_URL;
 
 export async function api(path, { token, method = "GET", body } = {}) {
   const headers = { Accept: "application/json" };

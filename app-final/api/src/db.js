@@ -6,8 +6,14 @@ import { createClient } from "@libsql/client";
 const here = dirname(fileURLToPath(import.meta.url));
 const defaultFile = join(here, "..", "data", "aether.db");
 
+function defaultUrl() {
+  if (process.env.DATABASE_URL) return process.env.DATABASE_URL;
+  if (process.env.VERCEL) return "file:/tmp/aether.db";
+  return `file://${defaultFile}`;
+}
+
 export function createDb() {
-  const url = process.env.DATABASE_URL || `file://${defaultFile}`;
+  const url = defaultUrl();
   if (url.startsWith("file:")) {
     const path = url.replace(/^file:\/\//, "").replace(/^file:/, "");
     mkdirSync(dirname(path), { recursive: true });

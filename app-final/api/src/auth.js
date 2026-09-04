@@ -3,7 +3,9 @@ import { SignJWT, jwtVerify } from "jose";
 const encoder = new TextEncoder();
 
 function secret() {
-  return encoder.encode(process.env.JWT_SECRET || "dev-only-change-me");
+  return encoder.encode(
+    process.env.JWT_SECRET || "aether-desk-demo-jwt-nao-usar-em-producao-real"
+  );
 }
 
 export function signToken(user) {

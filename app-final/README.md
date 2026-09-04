@@ -6,7 +6,15 @@ Empresa fictícia com placeholders em `mobile/company.js` e `api/src/company.js`
 
 ## Como rodar
 
-Terminal 1 — API (Hono, porta 3001):
+No **iPhone**, `localhost` é o próprio aparelho. O app aponta para a API na Vercel (`https://aether-desk-api.vercel.app`). O Metro usa túnel (`npm start`) para o Expo Go carregar o JS.
+
+```bash
+cd app-final/mobile
+npm install
+npm start
+```
+
+Backend local (opcional):
 
 ```bash
 cd app-final/api
@@ -15,18 +23,9 @@ npm run seed
 npm run dev
 ```
 
-Terminal 2 — app Expo:
-
 ```bash
 cd app-final/mobile
-npm install
-npx expo start
-```
-
-No celular físico, defina o IP da máquina:
-
-```bash
-EXPO_PUBLIC_API_URL=http://SEU_IP:3001 npx expo start
+EXPO_PUBLIC_API_URL=http://localhost:3001 npx expo start --lan
 ```
 
 ## Contas de demo

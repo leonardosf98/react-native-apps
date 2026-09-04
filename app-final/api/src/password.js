@@ -1,16 +1,24 @@
-import { Algorithm, hash, verify } from "@node-rs/argon2";
+import { argon2id, argon2Verify } from "hash-wasm";
 
-const OPTIONS = {
-  algorithm: Algorithm.Argon2id,
-  memoryCost: 19456,
-  timeCost: 2,
-  parallelism: 1,
-};
+function randomSalt() {
+  return crypto.getRandomValues(new Uint8Array(16));
+}
 
 export function hashPassword(plain) {
-  return hash(plain, OPTIONS);
+  return argon2id({
+    password: String(plain),
+    salt: randomSalt(),
+    parallelism: 1,
+    iterations: 2,
+    memorySize: 19456,
+    hashLength: 32,
+    outputType: "encoded",
+  });
 }
 
 export function verifyPassword(hashed, plain) {
-  return verify(hashed, plain, OPTIONS);
+  return argon2Verify({
+    password: String(plain),
+    hash: String(hashed),
+  });
 }

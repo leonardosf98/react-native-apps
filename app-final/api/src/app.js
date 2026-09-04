@@ -2,12 +2,14 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { COMPANY } from "./company.js";
 import { createDb, migrate } from "./db.js";
+import { seedIfEmpty } from "./seed.js";
 import { authRoutes, userRoutes } from "./routes/users.js";
 import { notificationRoutes, ticketRoutes } from "./routes/tickets.js";
 
 export async function createApp() {
   const db = createDb();
   await migrate(db);
+  await seedIfEmpty(db);
 
   const app = new Hono();
   app.use(
