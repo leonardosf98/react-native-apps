@@ -1,10 +1,13 @@
 import { Hono } from "hono";
+import { handle } from "@hono/node-server/vercel";
 import { cors } from "hono/cors";
 import { COMPANY } from "./company.js";
 import { createDb, migrate } from "./db.js";
 import { seedIfEmpty } from "./seed.js";
 import { authRoutes, userRoutes } from "./routes/users.js";
 import { notificationRoutes, ticketRoutes } from "./routes/tickets.js";
+
+let appPromise;
 
 export async function createApp() {
   const db = createDb();
@@ -31,4 +34,14 @@ export async function createApp() {
   app.route("/notifications", notificationRoutes(db));
 
   return app;
+}
+
+export function getApp() {
+  if (!appPromise) appPromise = createApp();
+  return appPromise;
+}
+
+export default async function handler(req, res) {
+  const app = await getApp();
+  return handle(app)(req, res);
 }

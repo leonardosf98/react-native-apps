@@ -10,7 +10,7 @@ export const DEMO_USERS = [
     email: "admin@aether.desk",
     password: "Admin#123",
     passwordHash:
-      "$argon2id$v=19$m=19456,t=2,p=1$Jdo1hbdpFNqvu3p/JHvJdw$9/hJzdk8d05i+aK80eRe/i056Qx34z6iZf3qZtbOesw",
+      "$argon2id$v=19$m=4096,t=2,p=1$bZ6vZU9jkuzTBeNJFXmliw$5K1839wTeT/Upf0ba/R9k+pINfoVSqwuyFQPmpcuBZ0",
     role: "admin",
   },
   {
@@ -19,7 +19,7 @@ export const DEMO_USERS = [
     email: "agente@aether.desk",
     password: "Agente#123",
     passwordHash:
-      "$argon2id$v=19$m=19456,t=2,p=1$cqgNso2ZwiGs/44++DD7VQ$1tLZQ176cQD6tNJg+UNlb59EB4qQtTPUpS2KxNwLgJQ",
+      "$argon2id$v=19$m=4096,t=2,p=1$MhWljWXPYn3ilwczr88Ycg$t4I013ig/sMI7knsDUpckIL0g+xfUbqlHQC4xfqRlU8",
     role: "atendente",
   },
   {
@@ -28,7 +28,7 @@ export const DEMO_USERS = [
     email: "cliente@aether.desk",
     password: "Cliente#123",
     passwordHash:
-      "$argon2id$v=19$m=19456,t=2,p=1$zMFfVtcKvQbeOS8Nfw23jQ$ALbGevERRqGMVxeq1nz/Z0p1ZTZ954y3yaxWEws5shc",
+      "$argon2id$v=19$m=4096,t=2,p=1$g+eYsyOi7Xn9KXIxRRmYCQ$5F5+4qS0/4XoItPIkWJp9nGAChQW5nL99KjYypemfD4",
     role: "cliente",
   },
 ];
@@ -52,9 +52,7 @@ export async function seedUsers(db) {
 }
 
 export async function seedIfEmpty(db) {
-  const result = await db.execute("SELECT COUNT(*) AS n FROM users");
-  const n = Number(result.rows[0]?.n ?? 0);
-  if (n === 0) await seedUsers(db);
+  await seedUsers(db);
 }
 
 const runningCli = process.argv[1]?.endsWith("seed.js");

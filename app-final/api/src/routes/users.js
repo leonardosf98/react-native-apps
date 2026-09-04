@@ -15,6 +15,8 @@ import {
 export function authRoutes(db) {
   const r = new Hono();
 
+  r.get("/login", (c) => jsonError(c, 405, "Use POST /auth/login"));
+
   r.post("/login", async (c) => {
     const body = await c.req.json().catch(() => ({}));
     const email = String(body.email || "")

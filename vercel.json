@@ -1,0 +1,5 @@
+{
+  "framework": null,
+  "installCommand": "npm install --prefix app-final/api",
+  "rewrites": [{ "source": "/(.*)", "destination": "/api" }]
+}
