@@ -1,5 +1,4 @@
 import { Hono } from "hono";
-import { handle } from "@hono/node-server/vercel";
 import { cors } from "hono/cors";
 import { COMPANY } from "./company.js";
 import { createDb, migrate } from "./db.js";
@@ -41,7 +40,9 @@ export function getApp() {
   return appPromise;
 }
 
-export default async function handler(req, res) {
-  const app = await getApp();
-  return handle(app)(req, res);
-}
+export default {
+  async fetch(request) {
+    const app = await getApp();
+    return app.fetch(request);
+  },
+};
