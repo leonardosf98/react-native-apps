@@ -8,6 +8,8 @@ Empresa fictícia com placeholders em `mobile/company.js` e `api/src/company.js`
 
 No **iPhone**, `localhost` é o próprio aparelho. O app aponta para a API na Vercel (`https://react-native-apps.vercel.app`). O Metro usa túnel (`npm start`) para o Expo Go carregar o JS.
 
+O **front web** na Vercel é o export estático do Expo (`npx expo export --platform web`). No projeto `react-native-apps-fewt`, Root Directory = `app-final/mobile`. A API continua em `react-native-apps`.
+
 ```bash
 cd app-final/mobile
 npm install
