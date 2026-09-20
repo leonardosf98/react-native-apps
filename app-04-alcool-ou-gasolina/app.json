@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Álcool ou Gasolina",
+    "slug": "alcool-ou-gasolina",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#006B2D"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#006B2D"
+      }
+    },
+    "plugins": [
+      "expo-asset"
+    ]
+  }
+}
