@@ -170,6 +170,18 @@ export default function App() {
     setCreating(false);
   }
 
+  async function openNotification(item) {
+    try {
+      await openTicket(item.ticketId);
+    } catch (err) {
+      if (err.status === 404) {
+        setNotifications((current) => current.filter((notification) => notification.id !== item.id));
+        return;
+      }
+      setAuthError(err.message);
+    }
+  }
+
   async function createTicket(payload) {
     setSaving(true);
     try {
@@ -276,7 +288,7 @@ export default function App() {
     body = (
       <NotificationsScreen
         items={notifications}
-        onOpen={openTicket}
+        onOpen={openNotification}
         onMarkSeen={() => {
           setUnread(0);
           sinceRef.current = new Date().toISOString();
@@ -319,7 +331,7 @@ export default function App() {
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
       <StatusBar style="dark" />
-      <View style={{ flex: 1, paddingTop: 12 }}>{body}</View>
+      <View style={{ flex: 1 }}>{body}</View>
       {hideTabs ? null : (
         <TabBar
           tabs={tabs}

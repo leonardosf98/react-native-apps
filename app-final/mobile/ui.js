@@ -1,11 +1,39 @@
-import { ActivityIndicator, Pressable, Text, TextInput, View } from "react-native";
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  StatusBar,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { colors } from "./theme";
+
+const SCREEN_PAD_X = 24;
+const SCREEN_PAD_TOP =
+  Platform.OS === "android" ? (StatusBar.currentHeight || 0) + 16 : Platform.OS === "web" ? 28 : 56;
 
 export function Screen({ children, style }) {
   return (
-    <View style={[{ flex: 1, backgroundColor: colors.bg, paddingHorizontal: 20 }, style]}>
-      {children}
-    </View>
+    <KeyboardAvoidingView
+      style={{ flex: 1, backgroundColor: colors.bg }}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+    >
+      <View
+        style={[
+          {
+            flex: 1,
+            backgroundColor: colors.bg,
+            paddingHorizontal: SCREEN_PAD_X,
+            paddingTop: SCREEN_PAD_TOP,
+          },
+          style,
+        ]}
+      >
+        {children}
+      </View>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -16,7 +44,7 @@ export function Card({ children, style }) {
         {
           backgroundColor: colors.card,
           borderRadius: 20,
-          padding: 18,
+          padding: 20,
           borderWidth: 1,
           borderColor: colors.line,
           shadowColor: "#1E3A8A",
@@ -70,7 +98,15 @@ export function Badge({ label, color, bg }) {
   );
 }
 
-export function Field({ label, value, onChangeText, secure, placeholder, multiline }) {
+export function Field({
+  label,
+  value,
+  onChangeText,
+  secure,
+  placeholder,
+  multiline,
+  ...inputProps
+}) {
   return (
     <View style={{ marginBottom: 14 }}>
       <Text style={{ color: colors.muted, fontSize: 12, fontWeight: "700", marginBottom: 6 }}>
@@ -84,6 +120,8 @@ export function Field({ label, value, onChangeText, secure, placeholder, multili
         placeholderTextColor="#94A3B8"
         multiline={multiline}
         textAlignVertical={multiline ? "top" : "center"}
+        returnKeyType={multiline ? "default" : "done"}
+        blurOnSubmit={!multiline}
         style={{
           backgroundColor: "#F8FBFF",
           borderWidth: 1,
@@ -95,6 +133,7 @@ export function Field({ label, value, onChangeText, secure, placeholder, multili
           color: colors.text,
           fontSize: 16,
         }}
+        {...inputProps}
       />
     </View>
   );
@@ -166,9 +205,9 @@ export function TabBar({ tabs, current, onChange, badge }) {
         backgroundColor: colors.card,
         borderTopWidth: 1,
         borderColor: colors.line,
-        paddingBottom: 18,
+        paddingBottom: Platform.OS === "ios" ? 28 : 18,
         paddingTop: 10,
-        paddingHorizontal: 8,
+        paddingHorizontal: 16,
       }}
     >
       {tabs.map((tab) => {

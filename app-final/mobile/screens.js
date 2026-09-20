@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import {
   Alert,
+  Keyboard,
   Pressable,
   ScrollView,
   Text,
@@ -30,46 +31,74 @@ function formatWhen(iso) {
 export function LoginScreen({ onLogin, onGoRegister, loading, error }) {
   const [email, setEmail] = useState("cliente@aether.desk");
   const [password, setPassword] = useState("Cliente#123");
+  function submit() {
+    Keyboard.dismiss();
+    onLogin(email, password);
+  }
   return (
-    <Screen style={{ justifyContent: "center" }}>
-      <View
-        style={{
-          width: 56,
-          height: 56,
-          borderRadius: 18,
-          backgroundColor: colors.primary,
-          alignItems: "center",
-          justifyContent: "center",
-          marginBottom: 18,
-        }}
+    <Screen>
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
+        contentContainerStyle={{ flexGrow: 1, justifyContent: "center", paddingBottom: 32 }}
       >
-        <Text style={{ color: "#fff", fontWeight: "900", fontSize: 22 }}>A</Text>
-      </View>
-      <Title>{COMPANY.nomeFantasia}</Title>
-      <Muted style={{ marginTop: 8, marginBottom: 24 }}>
-        Central de chamados. CNPJ {COMPANY.cnpj}
-      </Muted>
-      <Card>
-        <Field label="Email" value={email} onChangeText={setEmail} placeholder="você@empresa.com" />
-        <Field
-          label="Senha"
-          value={password}
-          onChangeText={setPassword}
-          secure
-          placeholder="••••••••"
-        />
-        {error ? (
-          <Text style={{ color: colors.danger, marginBottom: 12, fontWeight: "600" }}>
-            {error}
-          </Text>
-        ) : null}
-        <Button title="Entrar" loading={loading} onPress={() => onLogin(email, password)} />
-        <View style={{ height: 10 }} />
-        <Button title="Criar conta de cliente" variant="ghost" onPress={onGoRegister} />
-      </Card>
-      <Muted style={{ marginTop: 16 }}>
-        Demo: cliente@aether.desk · agente@aether.desk · admin@aether.desk
-      </Muted>
+        <Pressable onPress={Keyboard.dismiss}>
+          <View
+            style={{
+              width: 56,
+              height: 56,
+              borderRadius: 18,
+              backgroundColor: colors.primary,
+              alignItems: "center",
+              justifyContent: "center",
+              marginBottom: 18,
+            }}
+          >
+            <Text style={{ color: "#fff", fontWeight: "900", fontSize: 22 }}>A</Text>
+          </View>
+          <Title>{COMPANY.nomeFantasia}</Title>
+          <Muted style={{ marginTop: 8, marginBottom: 24 }}>
+            Central de chamados. CNPJ {COMPANY.cnpj}
+          </Muted>
+        </Pressable>
+        <Card>
+          <Field
+            label="Email"
+            value={email}
+            onChangeText={setEmail}
+            placeholder="você@empresa.com"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoComplete="email"
+            returnKeyType="next"
+            blurOnSubmit={false}
+          />
+          <Field
+            label="Senha"
+            value={password}
+            onChangeText={setPassword}
+            secure
+            placeholder="••••••••"
+            autoComplete="password"
+            returnKeyType="go"
+            onSubmitEditing={submit}
+          />
+          {error ? (
+            <Text style={{ color: colors.danger, marginBottom: 12, fontWeight: "600" }}>
+              {error}
+            </Text>
+          ) : null}
+          <Button title="Entrar" loading={loading} onPress={submit} />
+          <View style={{ height: 10 }} />
+          <Button title="Criar conta de cliente" variant="ghost" onPress={onGoRegister} />
+        </Card>
+        <Pressable onPress={Keyboard.dismiss}>
+          <Muted style={{ marginTop: 16 }}>
+            Demo: cliente@aether.desk · agente@aether.desk · admin@aether.desk
+          </Muted>
+        </Pressable>
+      </ScrollView>
     </Screen>
   );
 }
@@ -78,26 +107,54 @@ export function RegisterScreen({ onRegister, onBack, loading, error }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  function submit() {
+    Keyboard.dismiss();
+    onRegister({ name, email, password });
+  }
   return (
-    <Screen style={{ paddingTop: 56 }}>
-      <Pressable onPress={onBack}>
-        <Text style={{ color: colors.primary, fontWeight: "700", marginBottom: 16 }}>Voltar</Text>
-      </Pressable>
-      <Title>Nova conta</Title>
-      <Muted style={{ marginTop: 8, marginBottom: 20 }}>
-        Cadastro de cliente em {COMPANY.nomeFantasia}.
-      </Muted>
-      <Card>
-        <Field label="Nome" value={name} onChangeText={setName} placeholder="Seu nome" />
-        <Field label="Email" value={email} onChangeText={setEmail} />
-        <Field label="Senha" value={password} onChangeText={setPassword} secure />
-        {error ? (
-          <Text style={{ color: colors.danger, marginBottom: 12, fontWeight: "600" }}>
-            {error}
-          </Text>
-        ) : null}
-        <Button title="Cadastrar" loading={loading} onPress={() => onRegister({ name, email, password })} />
-      </Card>
+    <Screen>
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
+        contentContainerStyle={{ paddingBottom: 32 }}
+      >
+        <Pressable onPress={onBack}>
+          <Text style={{ color: colors.primary, fontWeight: "700", marginBottom: 16 }}>Voltar</Text>
+        </Pressable>
+        <Title>Nova conta</Title>
+        <Muted style={{ marginTop: 8, marginBottom: 20 }}>
+          Cadastro de cliente em {COMPANY.nomeFantasia}.
+        </Muted>
+        <Card>
+          <Field label="Nome" value={name} onChangeText={setName} placeholder="Seu nome" />
+          <Field
+            label="Email"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoComplete="email"
+            returnKeyType="next"
+            blurOnSubmit={false}
+          />
+          <Field
+            label="Senha"
+            value={password}
+            onChangeText={setPassword}
+            secure
+            autoComplete="password"
+            returnKeyType="go"
+            onSubmitEditing={submit}
+          />
+          {error ? (
+            <Text style={{ color: colors.danger, marginBottom: 12, fontWeight: "600" }}>
+              {error}
+            </Text>
+          ) : null}
+          <Button title="Cadastrar" loading={loading} onPress={submit} />
+        </Card>
+      </ScrollView>
     </Screen>
   );
 }
@@ -140,7 +197,7 @@ export function TicketListScreen({
   empty,
 }) {
   return (
-    <Screen style={{ paddingTop: 20 }}>
+    <Screen>
       <Title>{title}</Title>
       <Muted style={{ marginTop: 6, marginBottom: 16 }}>{subtitle}</Muted>
       {onCreate ? (
@@ -169,7 +226,7 @@ export function NewTicketScreen({ onSave, onBack, loading }) {
   const [priority, setPriority] = useState("media");
   const [category, setCategory] = useState("tecnico");
   return (
-    <Screen style={{ paddingTop: 20 }}>
+    <Screen>
       <Pressable onPress={onBack}>
         <Text style={{ color: colors.primary, fontWeight: "700", marginBottom: 12 }}>Voltar</Text>
       </Pressable>
@@ -234,7 +291,7 @@ export function TicketDetailScreen({
   const status = STATUS_META[ticket.status] || STATUS_META.aberto;
   const staff = user.role === "admin" || user.role === "atendente";
   return (
-    <Screen style={{ paddingTop: 20 }}>
+    <Screen>
       <Pressable onPress={onBack}>
         <Text style={{ color: colors.primary, fontWeight: "700", marginBottom: 12 }}>Voltar</Text>
       </Pressable>
@@ -311,7 +368,7 @@ export function TicketDetailScreen({
 
 export function NotificationsScreen({ items, onOpen, onMarkSeen }) {
   return (
-    <Screen style={{ paddingTop: 20 }}>
+    <Screen>
       <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
         <Title>Fila ao vivo</Title>
         <Pressable onPress={onMarkSeen}>
@@ -350,7 +407,7 @@ export function UsersScreen({ users, onCreate, onToggle, onRole, onDelete }) {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("cliente");
   return (
-    <Screen style={{ paddingTop: 20 }}>
+    <Screen>
       <Title>Usuários</Title>
       <Muted style={{ marginTop: 6, marginBottom: 16 }}>CRUD interno da operação.</Muted>
       <Button title={open ? "Fechar formulário" : "Novo usuário"} variant={open ? "ghost" : "primary"} onPress={() => setOpen(!open)} />
@@ -422,7 +479,7 @@ export function ProfileScreen({ user, onLogout }) {
     []
   );
   return (
-    <Screen style={{ paddingTop: 20 }}>
+    <Screen>
       <Title>Conta</Title>
       <Card style={{ marginTop: 16 }}>
         <Text style={{ fontSize: 20, fontWeight: "800", color: colors.text }}>{user.name}</Text>
