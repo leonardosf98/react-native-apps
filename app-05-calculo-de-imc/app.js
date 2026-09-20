@@ -10,16 +10,40 @@ const LINE = "#BFDBFE";
 const TEXT = "#172033";
 const MUTED = "#52617A";
 
-function Field({ label, value, onChangeText, placeholder }) {
+function formatDecimal(raw) {
+  const d = String(raw || "").replace(/\D/g, "");
+  if (!d) return "";
+  const trimmed = d.replace(/^0+/, "") || "0";
+  if (trimmed.length <= 2) return `0,${trimmed.padStart(2, "0")}`;
+  const intPart = trimmed.slice(0, -2);
+  const decPart = trimmed.slice(-2);
+  return `${intPart},${decPart}`;
+}
+
+function Field({ label, rawValue, onChangeText, placeholder, maxIntDigits }) {
+  const display = formatDecimal(rawValue);
+  const maxRaw = maxIntDigits ? maxIntDigits + 2 : 0;
+  const [selection, setSelection] = useState({ start: display.length, end: display.length });
+
+  function handleChange(text) {
+    const digits = text.replace(/\D/g, "");
+    const newRaw = digits.replace(/^0+/, "");
+    if (maxRaw && newRaw.length > maxRaw) return;
+    onChangeText(newRaw);
+    const newDisplay = formatDecimal(newRaw);
+    setSelection({ start: newDisplay.length, end: newDisplay.length });
+  }
+
   return (
     <View style={{ marginBottom: 16 }}>
       <Text style={{ color: TEXT, fontSize: 14, fontWeight: "800", marginBottom: 8 }}>{label}</Text>
       <TextInput
-        value={value}
-        onChangeText={onChangeText}
+        value={display}
+        onChangeText={handleChange}
+        selection={selection}
         placeholder={placeholder}
         placeholderTextColor="#8DA2C4"
-        keyboardType="decimal-pad"
+        keyboardType="numeric"
         accessibilityLabel={label}
         style={{
           backgroundColor: PALE,
@@ -45,7 +69,7 @@ export default function App() {
 
   function calculate() {
     Keyboard.dismiss();
-    const bmi = calculateBmi(parseNumber(weight), parseNumber(height));
+    const bmi = calculateBmi(parseNumber(formatDecimal(weight)), parseNumber(formatDecimal(height)));
     if (!bmi) {
       setResult(null);
       setError("Informe peso e altura com valores maiores que zero.");
@@ -70,8 +94,8 @@ export default function App() {
         </View>
 
         <View style={{ flex: 1, backgroundColor: "#FFFFFF", borderTopLeftRadius: 28, borderTopRightRadius: 28, padding: 24 }}>
-          <Field label="Peso (kg)" value={weight} onChangeText={setWeight} placeholder="Ex.: 70" />
-          <Field label="Altura (m)" value={height} onChangeText={setHeight} placeholder="Ex.: 1,75" />
+          <Field label="Peso (kg)" rawValue={weight} onChangeText={setWeight} placeholder="Ex.: 70,00" />
+          <Field label="Altura (m)" rawValue={height} onChangeText={setHeight} placeholder="Ex.: 1,75" maxIntDigits={1} />
 
           <TouchableOpacity
             onPress={calculate}

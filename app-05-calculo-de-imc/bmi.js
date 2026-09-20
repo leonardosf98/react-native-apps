@@ -14,9 +14,8 @@ export function calculateBmi(weight, height) {
 }
 
 export function parseNumber(value) {
-  const normalized = value.replace(",", ".").trim();
-  if (!normalized || !/^\d+(\.\d+)?$/.test(normalized)) return null;
-
-  const number = Number(normalized);
+  const match = String(value).replace(",", ".").match(/\d+(\.\d+)?/);
+  if (!match) return null;
+  const number = Number(match[0]);
   return Number.isFinite(number) && number > 0 ? number : null;
 }
