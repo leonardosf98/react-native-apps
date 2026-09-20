@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Cálculo de IMC",
+    "slug": "calculo-de-imc",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#172554"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#172554"
+      }
+    },
+    "plugins": [
+      "expo-asset"
+    ]
+  }
+}
