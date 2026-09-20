@@ -1,6 +1,6 @@
 # Aether Desk
 
-App final da pasta: help desk com versão **cliente**, **atendente** e **admin**.
+App final da pasta: help desk com versão **cliente**, **atendente** e **admin**. Mobile em Expo SDK 57.
 
 Empresa fictícia com placeholders em `mobile/company.js` e `api/src/company.js` (`{{CNPJ}}`, `{{RAZAO_SOCIAL}}`, etc.).
 

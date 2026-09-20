@@ -1,0 +1,13 @@
+Vamos criar um app de suporte para chamados, tipo help desk. A ideia é que seja um projeto dessa pasta, o projeto final, para a empresa AINDA FICTICIA MAS COM PLACEHOLDERS, para cnpj, nome da empresa etc...
+
+- CRUD de usuários
+- CRUD de chamados
+- Seleção de atendente ao chamado, e alteração de status
+- app versão cliente que faz o chamado
+- app versão atendente e notificação de pedidos
+- design, tom de branco e azul, mas moderno, evite usar framework somente se necessário, mas tente fazer algo bonito com a interface
+- padrões de segurança como argon id para guardar dados sensíveis
+- backend em algo que a vercel sustente, provavelmente node js com nest? Ou hono? discutir tradeoffs não conheço hono
+- separação de commits, só pra ficar bem dividido, mas pode seguir sem perguntar. commitar tudo em main, não vamos nos preocupar com nada agora, mas creio que precisaremos separar o back e o front em repos distintos? Se não precisar sem problemas,
+
+<IMPORTANTE> documentar toda a parte de arquitetura desse software, para que possamos apresentar com uma futura apresentação de slides, só gerar markdown bem formatado no meu leo-vault na pasta de dispositivos móveis
