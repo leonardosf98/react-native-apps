@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Jogo do Número Aleatório",
+    "slug": "jogo-numero-aleatorio",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#3F1D38"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#3F1D38"
+      }
+    },
+    "plugins": [
+      "expo-asset"
+    ]
+  }
+}
