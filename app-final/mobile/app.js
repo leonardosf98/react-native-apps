@@ -1,8 +1,8 @@
 import { StatusBar } from "expo-status-bar";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { api } from "./apiClient";
-import { clearToken, loadToken, saveToken } from "./authStore";
+import { useAuth, useNotifications, useTickets, useUsers } from "./hooks";
 import {
   LoginScreen,
   NewTicketScreen,
@@ -40,171 +40,39 @@ function tabsFor(role) {
 }
 
 export default function App() {
-  const [boot, setBoot] = useState(true);
-  const [token, setToken] = useState(null);
-  const [user, setUser] = useState(null);
-  const [authMode, setAuthMode] = useState("login");
-  const [authError, setAuthError] = useState("");
-  const [authLoading, setAuthLoading] = useState(false);
   const [tab, setTab] = useState("tickets");
-  const [tickets, setTickets] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [agents, setAgents] = useState([]);
-  const [detail, setDetail] = useState(null);
-  const [creating, setCreating] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [notifications, setNotifications] = useState([]);
-  const [unread, setUnread] = useState(0);
-  const sinceRef = useRef(new Date().toISOString());
+  const [authMode, setAuthMode] = useState("login");
 
-  const staff = user?.role === "admin" || user?.role === "atendente";
-
-  const hydrate = useCallback(async (nextToken) => {
-    const me = await api("/auth/me", { token: nextToken });
-    setUser(me.user);
-    setToken(nextToken);
-    setTab(me.user.role === "cliente" ? "tickets" : "queue");
-  }, []);
+  const auth = useAuth();
+  const isStaff = auth.user?.role === "admin" || auth.user?.role === "atendente";
 
   useEffect(() => {
-    (async () => {
-      const stored = await loadToken();
-      if (stored) {
-        try {
-          await hydrate(stored);
-        } catch {
-          await clearToken();
-        }
-      }
-      setBoot(false);
-    })();
-  }, [hydrate]);
+    if (auth.user) {
+      setTab(auth.user.role === "cliente" ? "tickets" : "queue");
+    }
+  }, [auth.user]);
 
-  const refreshTickets = useCallback(async () => {
-    if (!token) return;
-    const query = tab === "mine" ? "?mine=1" : "";
-    const data = await api(`/tickets${query}`, { token });
-    setTickets(data.tickets);
-  }, [tab, token]);
-
-  const refreshUsers = useCallback(async () => {
-    if (!token || !staff) return;
-    const data = await api("/users", { token });
-    setUsers(data.users);
-    setAgents(data.users.filter((item) => item.role === "atendente" || item.role === "admin"));
-  }, [staff, token]);
+  const tickets = useTickets(auth.token);
+  const users = useUsers(auth.token, isStaff);
+  const notifications = useNotifications(auth.token, isStaff, () =>
+    tickets.refreshTickets(tab).catch(() => {}),
+  );
 
   useEffect(() => {
-    if (!token) return;
-    refreshTickets().catch(() => setTickets([]));
-    refreshUsers().catch(() => setUsers([]));
-  }, [refreshTickets, refreshUsers, token]);
+    if (!auth.token) return;
+    tickets.refreshTickets(tab).catch(() => {});
+    users.refreshUsers().catch(() => {});
+  }, [auth.token, tab]);
 
-  useEffect(() => {
-    if (!token || !staff) return undefined;
-    const tick = async () => {
-      try {
-        const data = await api(`/notifications?since=${encodeURIComponent(sinceRef.current)}`, {
-          token,
-        });
-        if (data.notifications.length) {
-          setNotifications((prev) => {
-            const ids = new Set(prev.map((item) => item.id));
-            const extra = data.notifications.filter((item) => !ids.has(item.id));
-            if (extra.length) setUnread((n) => n + extra.length);
-            return [...extra, ...prev].slice(0, 50);
-          });
-          refreshTickets().catch(() => {});
-        }
-      } catch {
-        return;
-      }
-    };
-    tick();
-    const id = setInterval(tick, 8000);
-    return () => clearInterval(id);
-  }, [refreshTickets, staff, token]);
+  const tabs = useMemo(() => (auth.user ? tabsFor(auth.user.role) : []), [auth.user]);
 
-  async function login(email, password) {
-    setAuthLoading(true);
-    setAuthError("");
-    try {
-      const data = await api("/auth/login", { method: "POST", body: { email, password } });
-      await saveToken(data.token);
-      await hydrate(data.token);
-    } catch (err) {
-      setAuthError(err.message);
-    } finally {
-      setAuthLoading(false);
-    }
+  async function handleCreateTicket(payload) {
+    const result = await tickets.createTicket(payload, tab);
+    if (result.ok) return;
+    auth.setAuthError(result.error);
   }
 
-  async function register(payload) {
-    setAuthLoading(true);
-    setAuthError("");
-    try {
-      const data = await api("/auth/register", { method: "POST", body: payload });
-      await saveToken(data.token);
-      await hydrate(data.token);
-    } catch (err) {
-      setAuthError(err.message);
-    } finally {
-      setAuthLoading(false);
-    }
-  }
-
-  async function logout() {
-    await clearToken();
-    setToken(null);
-    setUser(null);
-    setTickets([]);
-    setNotifications([]);
-    setUnread(0);
-    setDetail(null);
-    setAuthMode("login");
-  }
-
-  async function openTicket(id) {
-    const data = await api(`/tickets/${id}`, { token });
-    setDetail(data);
-    setCreating(false);
-  }
-
-  async function openNotification(item) {
-    try {
-      await openTicket(item.ticketId);
-    } catch (err) {
-      if (err.status === 404) {
-        setNotifications((current) => current.filter((notification) => notification.id !== item.id));
-        return;
-      }
-      setAuthError(err.message);
-    }
-  }
-
-  async function createTicket(payload) {
-    setSaving(true);
-    try {
-      const data = await api("/tickets", { token, method: "POST", body: payload });
-      setCreating(false);
-      await refreshTickets();
-      await openTicket(data.ticket.id);
-    } catch (err) {
-      setAuthError(err.message);
-    } finally {
-      setSaving(false);
-    }
-  }
-
-  async function patchTicket(id, body) {
-    await api(`/tickets/${id}`, { token, method: "PATCH", body });
-    await openTicket(id);
-    await refreshTickets();
-  }
-
-  const tabs = useMemo(() => (user ? tabsFor(user.role) : []), [user]);
-
-  if (boot) {
+  if (auth.boot) {
     return (
       <View style={{ flex: 1, backgroundColor: colors.bg, alignItems: "center", justifyContent: "center" }}>
         <ActivityIndicator color={colors.primary} />
@@ -212,16 +80,16 @@ export default function App() {
     );
   }
 
-  if (!user) {
+  if (!auth.user) {
     if (authMode === "register") {
       return (
         <>
           <StatusBar style="dark" />
           <RegisterScreen
-            onRegister={register}
+            onRegister={auth.register}
             onBack={() => setAuthMode("login")}
-            loading={authLoading}
-            error={authError}
+            loading={auth.authLoading}
+            error={auth.authError}
           />
         </>
       );
@@ -230,43 +98,39 @@ export default function App() {
       <>
         <StatusBar style="dark" />
         <LoginScreen
-          onLogin={login}
+          onLogin={auth.login}
           onGoRegister={() => {
-            setAuthError("");
+            auth.setAuthError("");
             setAuthMode("register");
           }}
-          loading={authLoading}
-          error={authError}
+          loading={auth.authLoading}
+          error={auth.authError}
         />
       </>
     );
   }
 
   let body = null;
-  if (creating) {
+  if (tickets.creating) {
     body = (
       <NewTicketScreen
-        loading={saving}
-        onBack={() => setCreating(false)}
-        onSave={createTicket}
+        loading={tickets.saving}
+        onBack={tickets.cancelCreating}
+        onSave={handleCreateTicket}
       />
     );
-  } else if (detail) {
+  } else if (tickets.detail) {
     body = (
       <TicketDetailScreen
-        ticket={detail.ticket}
-        events={detail.events}
-        user={user}
-        agents={agents}
-        onBack={() => setDetail(null)}
-        onAssign={(agentId) => patchTicket(detail.ticket.id, { agentId })}
-        onStatus={(status) => patchTicket(detail.ticket.id, { status })}
-        onCancel={() => patchTicket(detail.ticket.id, { status: "cancelado" })}
-        onDelete={async () => {
-          await api(`/tickets/${detail.ticket.id}`, { token, method: "DELETE" });
-          setDetail(null);
-          await refreshTickets();
-        }}
+        ticket={tickets.detail.ticket}
+        events={tickets.detail.events}
+        user={auth.user}
+        agents={users.agents}
+        onBack={tickets.clearDetail}
+        onAssign={(agentId) => tickets.patchTicket(tickets.detail.ticket.id, { agentId }, tab)}
+        onStatus={(status) => tickets.patchTicket(tickets.detail.ticket.id, { status }, tab)}
+        onCancel={() => tickets.patchTicket(tickets.detail.ticket.id, { status: "cancelado" }, tab)}
+        onDelete={() => tickets.deleteTicket(tickets.detail.ticket.id, tab)}
       />
     );
   } else if (tab === "tickets" || tab === "queue" || tab === "mine") {
@@ -278,55 +142,37 @@ export default function App() {
             ? "Pedidos da operação, para atribuir e avançar status."
             : "Acompanhe abertura, andamento e fechamento."
         }
-        tickets={tickets}
-        onOpen={(ticket) => openTicket(ticket.id)}
-        onCreate={user.role === "cliente" ? () => setCreating(true) : undefined}
+        tickets={tickets.tickets}
+        onOpen={(ticket) => tickets.openTicket(ticket.id)}
+        onCreate={auth.user.role === "cliente" ? tickets.startCreating : undefined}
         empty="Nenhum chamado por aqui ainda."
       />
     );
   } else if (tab === "inbox") {
     body = (
       <NotificationsScreen
-        items={notifications}
-        onOpen={openNotification}
-        onMarkSeen={() => {
-          setUnread(0);
-          sinceRef.current = new Date().toISOString();
-          setNotifications([]);
-        }}
+        items={notifications.notifications}
+        onOpen={(item) =>
+          notifications.openNotification(item, (id) => tickets.openTicket(id))
+        }
+        onMarkSeen={notifications.markSeen}
       />
     );
   } else if (tab === "users") {
     body = (
       <UsersScreen
-        users={users}
-        onCreate={async (payload) => {
-          await api("/users", { token, method: "POST", body: payload });
-          await refreshUsers();
-        }}
-        onToggle={async (item) => {
-          await api(`/users/${item.id}`, {
-            token,
-            method: "PATCH",
-            body: { active: !item.active },
-          });
-          await refreshUsers();
-        }}
-        onRole={async (item, role) => {
-          await api(`/users/${item.id}`, { token, method: "PATCH", body: { role } });
-          await refreshUsers();
-        }}
-        onDelete={async (item) => {
-          await api(`/users/${item.id}`, { token, method: "DELETE" });
-          await refreshUsers();
-        }}
+        users={users.users}
+        onCreate={users.createUser}
+        onToggle={users.toggleUser}
+        onRole={users.changeRole}
+        onDelete={users.deleteUser}
       />
     );
   } else {
-    body = <ProfileScreen user={user} onLogout={logout} />;
+    body = <ProfileScreen user={auth.user} onLogout={auth.logout} />;
   }
 
-  const hideTabs = creating || Boolean(detail);
+  const hideTabs = tickets.creating || Boolean(tickets.detail);
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
@@ -338,9 +184,9 @@ export default function App() {
           current={tab}
           onChange={(key) => {
             setTab(key);
-            setDetail(null);
+            tickets.clearDetail();
           }}
-          badge={{ key: "inbox", count: unread }}
+          badge={{ key: "inbox", count: notifications.unread }}
         />
       )}
     </View>
