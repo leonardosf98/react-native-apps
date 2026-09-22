@@ -1,11 +1,10 @@
 {
   "framework": null,
-  "installCommand": "npm install",
-  "buildCommand": "npm run build",
+  "installCommand": "npm install --workspace=hub",
+  "buildCommand": "npm run build --workspace=hub",
   "outputDirectory": "hub/dist",
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/apps/:path*", "destination": "/apps/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
