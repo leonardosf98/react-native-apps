@@ -15,6 +15,13 @@ export default function App() {
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
 
+  function sanitizeInput(text) {
+    const digits = text.replace(/[^0-9]/g, "");
+    if (digits === "") return "";
+    const n = Number(digits);
+    return String(n > 10 ? 10 : n);
+  }
+
   function play() {
     Keyboard.dismiss();
     const parsedGuess = parseGuess(guess);
@@ -52,11 +59,12 @@ export default function App() {
           <Text style={{ color: TEXT, fontSize: 14, fontWeight: "800", marginBottom: 8 }}>Seu palpite</Text>
           <TextInput
             value={guess}
-            onChangeText={setGuess}
+            onChangeText={(text) => setGuess(sanitizeInput(text))}
             placeholder="0 a 10"
             placeholderTextColor="#B890AB"
             keyboardType="number-pad"
             maxLength={2}
+            maxValue={10}
             accessibilityLabel="Seu palpite"
             style={{ backgroundColor: PALE, borderColor: LINE, borderRadius: 14, borderWidth: 2, color: TEXT, fontSize: 22, fontWeight: "700", paddingHorizontal: 16, paddingVertical: 14 }}
           />
