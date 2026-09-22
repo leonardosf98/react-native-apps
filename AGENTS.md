@@ -1,11 +1,13 @@
 # AGENTS
 
-Coleção de apps Expo/React Native. Cada exercício é uma pasta na raiz.
+Coleção de apps Expo/React Native com hub unificado. Cada exercício é uma pasta na raiz.
 
 ## Pastas
 
 | Pasta | Papel |
 |---|---|
+| `hub/` | Landing page + SPA (Vite + React Router) que lista e embute todos os apps |
+| `scripts/` | Build scripts (export Expo apps → `hub/public/apps/`) |
 | `app-NN-slug/` | App de aula, autônomo |
 | `app-final/` | Help desk (mobile + api). Só mexer se o pedido for sobre ele. |
 

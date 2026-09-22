@@ -1,14 +1,11 @@
 {
   "framework": null,
-  "installCommand": "npm install --prefix app-final/api && npm install --prefix app-final/mobile",
-  "buildCommand": "cd app-final/mobile && npx expo export --platform web",
-  "outputDirectory": "app-final/mobile/dist",
+  "installCommand": "npm install",
+  "buildCommand": "npm run build",
+  "outputDirectory": "hub/dist",
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/health", "destination": "/api" },
-    { "source": "/auth/:path*", "destination": "/api" },
-    { "source": "/users/:path*", "destination": "/api" },
-    { "source": "/tickets/:path*", "destination": "/api" },
-    { "source": "/notifications/:path*", "destination": "/api" }
+    { "source": "/apps/:path*", "destination": "/apps/:path*" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

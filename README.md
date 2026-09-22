@@ -2,6 +2,8 @@
 
 Repositório com coleção de projetos em React Native. Stack: **Expo SDK 57**.
 
+Landing page unificada: [reactapps.leonardosouza.dev](https://reactapps.leonardosouza.dev/)
+
 ## Apps
 
 | # | Nome | Pasta |
@@ -14,7 +16,28 @@ Repositório com coleção de projetos em React Native. Stack: **Expo SDK 57**.
 | 06 | Jogo de número aleatório | [app-06-jogo-numero-aleatorio](./app-06-jogo-numero-aleatorio) |
 | final | Aether Desk (help desk) | [app-final](./app-final) |
 
-## Como rodar um app
+## Hub (Landing Page)
+
+O `hub/` é um app Vite + React Router que lista todos os apps e permite navegá-los via iframe.
+
+### Desenvolvimento
+
+```bash
+npm install
+npm run dev:hub
+```
+
+### Build completo (exporta todos os apps + builda o hub)
+
+```bash
+npm run build
+```
+
+### Deploy (Vercel)
+
+O `vercel.json` na raiz configura o build do hub. Cada app Expo é exportado para `hub/public/apps/<slug>/` e carregado via iframe.
+
+## Como rodar um app individual
 
 ```bash
 cd app-02-loja-pulse
