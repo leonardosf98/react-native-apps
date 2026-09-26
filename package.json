@@ -8,8 +8,7 @@
     "app-03-calculadora",
     "app-04-alcool-ou-gasolina",
     "app-05-calculo-de-imc",
-    "app-06-jogo-numero-aleatorio",
-    "app-final/mobile"
+    "app-06-jogo-numero-aleatorio"
   ],
   "scripts": {
     "build:apps": "bash scripts/build-apps.sh",

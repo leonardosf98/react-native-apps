@@ -9,11 +9,12 @@ Coleção de apps Expo/React Native com hub unificado. Cada exercício é uma pa
 | `hub/` | Landing page + SPA (Vite + React Router) que lista e embute todos os apps |
 | `scripts/` | Build scripts (export Expo apps → `hub/public/apps/`) |
 | `app-NN-slug/` | App de aula, autônomo |
-| `app-final/` | Help desk (mobile + api). Só mexer se o pedido for sobre ele. |
 
-Novos exercícios: `app-04-alcool-ou-gasolina`, depois `app-05-…`. Atualize a tabela do `README.md` da raiz.
+Novos exercícios: `app-07-…`. Atualize a tabela do `README.md` da raiz.
 
-## Padrão dos apps 01–04
+Help desk Aether Desk: repo separado `aether-desk` (não editar aqui).
+
+## Padrão dos apps
 
 - Expo SDK **57**, React **19.2**, React Native **0.86**
 - Entrada: `index.js` registra `./app` com `registerRootComponent`
@@ -27,7 +28,7 @@ Novos exercícios: `app-04-alcool-ou-gasolina`, depois `app-05-…`. Atualize a 
 - Sem comentários no código
 - `.gitignore`: `node_modules/`, `.expo/`, `dist/`, `web-build/`
 
-`app-final/mobile` também usa Expo SDK 57, com API própria. Não copie o backend para um exercício simples.
+Não copie backend de outros projetos para um exercício simples.
 
 ## Como trabalhar
 

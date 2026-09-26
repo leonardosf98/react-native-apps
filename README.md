@@ -14,7 +14,8 @@ Landing page unificada: [reactapps.leonardosouza.dev](https://reactapps.leonardo
 | 04 | Álcool ou Gasolina | [app-04-alcool-ou-gasolina](./app-04-alcool-ou-gasolina) |
 | 05 | Cálculo de IMC | [app-05-calculo-de-imc](./app-05-calculo-de-imc) |
 | 06 | Jogo de número aleatório | [app-06-jogo-numero-aleatorio](./app-06-jogo-numero-aleatorio) |
-| final | Aether Desk (help desk) | [app-final](./app-final) |
+
+O help desk **Aether Desk** vive em repositório separado: [leonardosf98/aether-desk](https://github.com/leonardosf98/aether-desk).
 
 ## Hub (Landing Page)
 
