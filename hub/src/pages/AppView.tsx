@@ -19,7 +19,7 @@ export default function AppView() {
     );
   }
 
-  const src = `${APP_BASE}/${app.slug}/index.html`;
+  const src = `${APP_BASE}/${app.slug}/`;
 
   return (
     <div className="app-view">
@@ -34,7 +34,7 @@ export default function AppView() {
         className="app-view-frame"
         src={src}
         title={app.title}
-        sandbox="allow-scripts allow-forms allow-popups"
+        sandbox="allow-scripts allow-forms allow-popups allow-same-origin"
       />
     </div>
   );

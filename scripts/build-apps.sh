@@ -14,7 +14,6 @@ declare -A APP_PATHS=(
   ["alcool-ou-gasolina"]="app-04-alcool-ou-gasolina"
   ["calculo-de-imc"]="app-05-calculo-de-imc"
   ["jogo-numero-aleatorio"]="app-06-jogo-numero-aleatorio"
-  ["aether-desk"]="app-final/mobile"
 )
 
 echo "🚀 Building all Expo apps for web..."

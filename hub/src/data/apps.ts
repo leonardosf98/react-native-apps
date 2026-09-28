@@ -69,14 +69,4 @@ export const apps: AppInfo[] = [
     gradient: "linear-gradient(135deg, #a18cd1, #fbc2eb)",
     repo: "https://github.com/leonardosf98/react-native-apps/tree/main/app-06-jogo-numero-aleatorio",
   },
-  {
-    slug: "aether-desk",
-    title: "Aether Desk",
-    tag: "Expo SDK 57 • Full Stack",
-    description:
-      "Sistema de help desk com perfis de cliente, atendente e admin. API Hono + LibSQL.",
-    emoji: "🎫",
-    gradient: "linear-gradient(135deg, #6c63ff, #3b82f6)",
-    repo: "https://github.com/leonardosf98/react-native-apps/tree/main/app-final",
-  },
 ];

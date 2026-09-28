@@ -3,8 +3,7 @@
   "installCommand": "cd hub && npm install",
   "buildCommand": "cd hub && npx vite build",
   "outputDirectory": "hub/dist",
-  "cleanUrls": true,
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/app/:path*", "destination": "/index.html" }
   ]
 }
