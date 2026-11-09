@@ -31,8 +31,8 @@ export default function App() {
             headerTintColor: "#FFFFFF",
             headerTitleStyle: { fontWeight: "900" },
             tabBarInactiveTintColor: "#94A3B8",
-            tabBarLabelStyle: { fontSize: 12, fontWeight: "800" },
-            tabBarStyle: { backgroundColor: "#FFFFFF", borderTopColor: "#E2E8F0" },
+            tabBarLabelStyle: { fontSize: 12, lineHeight: 16, fontWeight: "800" },
+            tabBarStyle: { backgroundColor: "#FFFFFF", borderTopColor: "#E2E8F0", height: 64, paddingTop: 6, paddingBottom: 8 },
           }}
         >
           {SCREENS.map(({ currency, component }) => (

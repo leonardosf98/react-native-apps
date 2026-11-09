@@ -65,6 +65,11 @@ export_app() {
   mkdir -p "$target_dir"
   cp -r "$app_dir/dist"/. "$target_dir/"
   rm -rf "$app_dir/dist"
+
+  if [ -d "$target_dir/assets/node_modules" ]; then
+    mv "$target_dir/assets/node_modules" "$target_dir/assets/vendor"
+    grep -rl "/assets/node_modules/" "$target_dir/_expo" | xargs -r sed -i "s|/apps/$slug/assets/node_modules/|/apps/$slug/assets/vendor/|g"
+  fi
   echo "   ✅ hub/public/apps/$slug"
 }
 

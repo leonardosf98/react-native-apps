@@ -227,8 +227,8 @@ export default function App() {
               headerTitle: route.name === "Pessoal" ? "Meu Perfil" : route.name,
               tabBarActiveTintColor: VIOLET,
               tabBarInactiveTintColor: "#9A93B8",
-              tabBarLabelStyle: { fontSize: 12, fontWeight: "700" },
-              tabBarStyle: { backgroundColor: "#FFFFFF", borderTopColor: LINE },
+              tabBarLabelStyle: { fontSize: 12, lineHeight: 16, fontWeight: "700" },
+              tabBarStyle: { backgroundColor: "#FFFFFF", borderTopColor: LINE, height: 64, paddingTop: 6, paddingBottom: 8 },
               tabBarIcon: ({ color, size, focused }) => (
                 <Ionicons name={focused ? tab.icon : `${tab.icon}-outline`} size={size} color={color} />
               ),
