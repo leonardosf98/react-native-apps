@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Vagas de TI",
+    "slug": "vagas-ti-scrollview",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#0F3D3E"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0F3D3E"
+      }
+    },
+    "plugins": [
+      "expo-asset"
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Lista de Compras",
+    "slug": "lista-de-compras",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#14532D"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#14532D"
+      }
+    },
+    "plugins": [
+      "expo-asset"
+    ]
+  }
+}

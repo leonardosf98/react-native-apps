@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Meu Perfil com Top Tabs",
+    "slug": "perfil-top-tabs",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#064E3B"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#064E3B"
+      }
+    },
+    "plugins": [
+      "expo-asset"
+    ]
+  }
+}

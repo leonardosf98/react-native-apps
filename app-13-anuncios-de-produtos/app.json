@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Anúncios de Produtos",
+    "slug": "anuncios-de-produtos",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#1C1917"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#1C1917"
+      }
+    },
+    "plugins": [
+      "expo-asset"
+    ]
+  }
+}

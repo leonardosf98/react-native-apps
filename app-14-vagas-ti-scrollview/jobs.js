@@ -1,0 +1,98 @@
+export const JOBS = [
+  {
+    id: "1",
+    title: "Desenvolvedor(a) React Native Pleno",
+    company: "Maré Digital",
+    salary: "R$ 9.500,00",
+    mode: "Remoto",
+    location: "Recife, PE",
+    description:
+      "Desenvolver e manter aplicativos móveis de pagamentos usados por mais de 2 milhões de clientes, trabalhando junto a design e produto em ciclos curtos de entrega.",
+    requirements: ["React Native e TypeScript", "Consumo de APIs REST", "Testes com Jest", "Publicação nas lojas Android e iOS"],
+    contact: "talentos@maredigital.com.br",
+  },
+  {
+    id: "2",
+    title: "Engenheiro(a) de Dados Sênior",
+    company: "Atlântica Analytics",
+    salary: "R$ 15.000,00",
+    mode: "Híbrido",
+    location: "São Paulo, SP",
+    description:
+      "Projetar pipelines de dados em larga escala, garantir a qualidade das informações e apoiar os times de ciência de dados com modelos confiáveis.",
+    requirements: ["Python e SQL avançado", "Apache Spark e Airflow", "Experiência com data lakes", "Modelagem dimensional"],
+    contact: "vagas@atlanticaanalytics.com",
+  },
+  {
+    id: "3",
+    title: "Analista de Suporte Técnico Júnior",
+    company: "Coral Sistemas",
+    salary: "R$ 3.200,00",
+    mode: "Presencial",
+    location: "Fortaleza, CE",
+    description:
+      "Atender clientes por chat e telefone, registrar chamados e resolver problemas de instalação e configuração do ERP da empresa.",
+    requirements: ["Boa comunicação", "Noções de redes e Windows", "Cursando TI ou áreas afins", "Vontade de aprender"],
+    contact: "rh@coralsistemas.com.br",
+  },
+  {
+    id: "4",
+    title: "Desenvolvedor(a) Back-end Node.js",
+    company: "Recife Tech Hub",
+    salary: "R$ 8.000,00",
+    mode: "Remoto",
+    location: "Recife, PE",
+    description:
+      "Construir microsserviços para a plataforma de logística, cuidando de performance, observabilidade e integrações com parceiros.",
+    requirements: ["Node.js e Express", "PostgreSQL e Redis", "Docker", "Mensageria (RabbitMQ ou Kafka)"],
+    contact: "carreiras@recifetechhub.io",
+  },
+  {
+    id: "5",
+    title: "UX/UI Designer Pleno",
+    company: "Onda Criativa",
+    salary: "R$ 7.200,00",
+    mode: "Híbrido",
+    location: "Florianópolis, SC",
+    description:
+      "Conduzir pesquisas com usuários, desenhar fluxos e protótipos de alta fidelidade e manter o design system dos produtos da empresa.",
+    requirements: ["Figma avançado", "Portfólio com cases", "Pesquisa e testes de usabilidade", "Noções de acessibilidade"],
+    contact: "design@ondacriativa.com.br",
+  },
+  {
+    id: "6",
+    title: "Engenheiro(a) DevOps",
+    company: "Nuvem Azul Cloud",
+    salary: "R$ 13.000,00",
+    mode: "Remoto",
+    location: "Belo Horizonte, MG",
+    description:
+      "Automatizar a infraestrutura em nuvem, manter pipelines de CI/CD e garantir a disponibilidade dos serviços críticos 24x7.",
+    requirements: ["Kubernetes e Terraform", "AWS ou GCP", "GitHub Actions", "Monitoramento com Prometheus e Grafana"],
+    contact: "jobs@nuvemazul.cloud",
+  },
+  {
+    id: "7",
+    title: "Analista de QA (Testes Automatizados)",
+    company: "Porto Software",
+    salary: "R$ 6.500,00",
+    mode: "Híbrido",
+    location: "Porto Alegre, RS",
+    description:
+      "Planejar e automatizar testes web e mobile, acompanhar a qualidade das entregas e apoiar o time na prevenção de defeitos.",
+    requirements: ["Cypress ou Playwright", "Testes de API com Postman", "Lógica de programação", "Metodologias ágeis"],
+    contact: "qualidade@portosoftware.com.br",
+  },
+  {
+    id: "8",
+    title: "Estágio em Desenvolvimento Web",
+    company: "Recifes Educação",
+    salary: "R$ 1.800,00 (bolsa)",
+    mode: "Presencial",
+    location: "Salvador, BA",
+    description:
+      "Apoiar o time no desenvolvimento das páginas da plataforma de cursos, com mentoria semanal e plano de carreira.",
+    requirements: ["HTML, CSS e JavaScript", "Noções de React", "Cursando Sistemas, Computação ou ADS", "Disponibilidade de 6h diárias"],
+    contact: "estagio@recifeseducacao.com.br",
+  },
+];

@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "App de Filmes",
+    "slug": "filmes",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "backgroundColor": "#0B0B12"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0B0B12"
+      }
+    },
+    "plugins": [
+      "expo-asset"
+    ]
+  }
+}

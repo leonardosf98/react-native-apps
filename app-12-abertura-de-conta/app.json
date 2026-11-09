@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Abertura de Conta",
+    "slug": "abertura-de-conta",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#064E3B"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#064E3B"
+      }
+    },
+    "plugins": [
+      "expo-asset"
+    ]
+  }
+}
