@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { Keyboard, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Keyboard, Platform, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { calculateBmi, parseNumber } from "./bmi";
 import { ACTIVITY_LEVELS, calculateTdee } from "./tdee";
 
@@ -285,7 +285,7 @@ export default function App() {
   const [tab, setTab] = useState("bmi");
 
   return (
-    <Pressable style={{ flex: 1, backgroundColor: NAVY }} onPress={Keyboard.dismiss}>
+    <Pressable style={{ flex: 1, backgroundColor: NAVY }} onPress={Platform.OS === "web" ? undefined : Keyboard.dismiss}>
       <StatusBar style="light" />
       <View style={{ flex: 1, maxWidth: 440, width: "100%", alignSelf: "center" }}>
         <View style={{ padding: 24, paddingTop: 56 }}>

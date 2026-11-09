@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { Keyboard, Pressable, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Keyboard, Platform, Pressable, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { drawNumber, parseGuess } from "./game";
 
 const PLUM = "#3F1D38";
@@ -43,7 +43,7 @@ export default function App() {
   }
 
   return (
-    <Pressable style={{ flex: 1, backgroundColor: PLUM }} onPress={Keyboard.dismiss}>
+    <Pressable style={{ flex: 1, backgroundColor: PLUM }} onPress={Platform.OS === "web" ? undefined : Keyboard.dismiss}>
       <StatusBar style="light" />
       <View style={{ flex: 1, maxWidth: 440, width: "100%", alignSelf: "center" }}>
         <View style={{ padding: 24, paddingTop: 56 }}>

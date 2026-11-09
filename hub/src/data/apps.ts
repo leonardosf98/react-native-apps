@@ -42,7 +42,7 @@ export const apps: AppInfo[] = [
   {
     slug: "alcool-ou-gasolina",
     title: "Álcool ou Gasolina",
-    tag: "Expo SDK 57",
+    tag: "Expo SDK 58",
     description:
       "Calculadora que mostra qual combustível é mais vantajoso com base nos preços.",
     emoji: "⛽",
@@ -52,7 +52,7 @@ export const apps: AppInfo[] = [
   {
     slug: "calculo-de-imc",
     title: "Cálculo de IMC",
-    tag: "Expo SDK 57",
+    tag: "Expo SDK 58",
     description:
       "Calculadora de Índice de Massa Corporal com classificação e dicas.",
     emoji: "💪",
@@ -62,7 +62,7 @@ export const apps: AppInfo[] = [
   {
     slug: "jogo-numero-aleatorio",
     title: "Jogo Número Aleatório",
-    tag: "Expo SDK 57",
+    tag: "Expo SDK 58",
     description:
       "Jogo interativo onde o jogador precisa adivinhar um número aleatório.",
     emoji: "🎲",

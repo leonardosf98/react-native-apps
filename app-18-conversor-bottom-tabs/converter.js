@@ -1,6 +1,6 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
-import { Keyboard, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Keyboard, Platform, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { RATES_DATE, convert, formatBrl, formatNumber, parseBrl } from "./currencies";
 
 const INK = "#0F172A";
@@ -37,7 +37,7 @@ export default function Converter({ currency }) {
       contentContainerStyle={{ padding: 20, paddingBottom: 40, width: "100%", maxWidth: 520, alignSelf: "center" }}
       keyboardShouldPersistTaps="handled"
     >
-      <Pressable onPress={Keyboard.dismiss} accessible={false}>
+      <Pressable onPress={Platform.OS === "web" ? undefined : Keyboard.dismiss} accessible={false}>
         <View
           style={{
             backgroundColor: currency.accent,

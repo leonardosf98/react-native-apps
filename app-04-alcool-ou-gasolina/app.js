@@ -102,7 +102,7 @@ export default function App() {
   const verdict = result ? VERDICT[result.pick] : null;
 
   return (
-    <Pressable style={{ flex: 1, backgroundColor: GREEN }} onPress={Keyboard.dismiss}>
+    <Pressable style={{ flex: 1, backgroundColor: GREEN }} onPress={Platform.OS === "web" ? undefined : Keyboard.dismiss}>
       <StatusBar style="light" />
         <View
           style={{

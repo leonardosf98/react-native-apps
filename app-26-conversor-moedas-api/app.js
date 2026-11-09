@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { ActivityIndicator, Keyboard, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Keyboard, Platform, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { CURRENCIES, fetchQuotes, formatDate, formatNumber, parseBrl } from "./quotes";
 
 const DEEP = "#052E2B";
@@ -117,7 +117,7 @@ export default function App() {
     <View style={{ flex: 1, backgroundColor: DEEP }}>
       <StatusBar style="light" />
       <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ flexGrow: 1, alignItems: "center", paddingHorizontal: 16, paddingTop: 56, paddingBottom: 32 }}>
-        <Pressable onPress={Keyboard.dismiss} style={{ width: "100%", maxWidth: 480 }} accessible={false}>
+        <Pressable onPress={Platform.OS === "web" ? undefined : Keyboard.dismiss} style={{ width: "100%", maxWidth: 480 }} accessible={false}>
           <View style={{ marginBottom: 24 }}>
             <Text style={{ color: GOLD, fontSize: 13, fontWeight: "900", letterSpacing: 2, textTransform: "uppercase" }}>Cotação em tempo real</Text>
             <Text style={{ color: "#FFFFFF", fontSize: 32, fontWeight: "900", marginTop: 6 }}>Conversor de Moedas</Text>

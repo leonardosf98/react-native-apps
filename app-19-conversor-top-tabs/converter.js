@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Keyboard, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Keyboard, Platform, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { COLORS, RATES_DATE, convert, formatNumber, parseBrl } from "./rates";
 
 const QUICK_VALUES = [50, 100, 500, 1000];
@@ -22,7 +22,7 @@ export default function Converter({ rate }) {
       contentContainerStyle={{ padding: 20, paddingBottom: 40, alignItems: "center" }}
       keyboardShouldPersistTaps="handled"
     >
-      <Pressable onPress={Keyboard.dismiss} style={{ width: "100%", maxWidth: 480 }} accessible={false}>
+      <Pressable onPress={Platform.OS === "web" ? undefined : Keyboard.dismiss} style={{ width: "100%", maxWidth: 480 }} accessible={false}>
         <View
           style={{
             backgroundColor: "#FFFFFF",
