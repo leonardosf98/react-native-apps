@@ -1,70 +1,88 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ── Exports each Expo app for web and copies to hub/public/apps/<slug> ──
-
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 HUB_APPS_DIR="$REPO_ROOT/hub/public/apps"
 
-# Map of slug → relative path from repo root
-declare -A APP_PATHS=(
-  ["meu-perfil-profissional"]="app-01-meu-perfil-profissional"
-  ["loja-pulse"]="app-02-loja-pulse"
-  ["calculadora"]="app-03-calculadora"
-  ["alcool-ou-gasolina"]="app-04-alcool-ou-gasolina"
-  ["calculo-de-imc"]="app-05-calculo-de-imc"
-  ["jogo-numero-aleatorio"]="app-06-jogo-numero-aleatorio"
+APPS=(
+  "meu-perfil-profissional:app-01-meu-perfil-profissional"
+  "loja-pulse:app-02-loja-pulse"
+  "calculadora:app-03-calculadora"
+  "alcool-ou-gasolina:app-04-alcool-ou-gasolina"
+  "calculo-de-imc:app-05-calculo-de-imc"
+  "jogo-numero-aleatorio:app-06-jogo-numero-aleatorio"
+  "conversor-de-moedas:app-11-conversor-de-moedas"
+  "abertura-de-conta:app-12-abertura-de-conta"
+  "anuncios-de-produtos:app-13-anuncios-de-produtos"
+  "vagas-ti-scrollview:app-14-vagas-ti-scrollview"
+  "vagas-ti-flatlist:app-15-vagas-ti-flatlist"
+  "perfil-bottom-tabs:app-16-perfil-bottom-tabs"
+  "perfil-top-tabs:app-17-perfil-top-tabs"
+  "conversor-bottom-tabs:app-18-conversor-bottom-tabs"
+  "conversor-top-tabs:app-19-conversor-top-tabs"
+  "frase-preferencias:app-20-frase-preferencias"
+  "lista-de-tarefas:app-21-lista-de-tarefas"
+  "lista-de-compras:app-22-lista-de-compras"
+  "consulta-cep:app-23-consulta-cep"
+  "perfil-de-devs:app-24-perfil-de-devs"
+  "filmes:app-25-filmes"
+  "conversor-moedas-api:app-26-conversor-moedas-api"
+  "cadastro-de-tarefas:app-27-cadastro-de-tarefas"
 )
 
-echo "🚀 Building all Expo apps for web..."
-echo ""
+FILTER=("$@")
 
-for slug in "${!APP_PATHS[@]}"; do
-  app_dir="$REPO_ROOT/${APP_PATHS[$slug]}"
-  target_dir="$HUB_APPS_DIR/$slug"
+wanted() {
+  [ "${#FILTER[@]}" -eq 0 ] && return 0
+  for w in "${FILTER[@]}"; do [ "$w" = "$1" ] && return 0; done
+  return 1
+}
 
-  echo "────────────────────────────────────"
-  echo "📦 Building: $slug"
-  echo "   Source:   ${APP_PATHS[$slug]}"
-  echo ""
+export_app() {
+  local slug="$1" app_dir="$2" target_dir="$HUB_APPS_DIR/$1"
+  local original
+  original="$(cat "$app_dir/app.json")"
 
+  # Assets (fonts, navigation icons) are emitted with absolute URLs, so the bundle must know it lives under /apps/<slug>.
+  node -e '
+    const fs = require("fs");
+    const [file, base] = process.argv.slice(1);
+    const json = JSON.parse(fs.readFileSync(file, "utf8"));
+    json.expo.experiments = { ...(json.expo.experiments || {}), baseUrl: base };
+    fs.writeFileSync(file, JSON.stringify(json, null, 2) + "\n");
+  ' "$app_dir/app.json" "/apps/$slug"
+
+  rm -rf "$app_dir/dist"
+  (cd "$app_dir" && npx expo export --platform web 2>&1 | tail -2)
+  printf '%s\n' "$original" > "$app_dir/app.json"
+
+  if [ ! -f "$app_dir/dist/index.html" ]; then
+    echo "   ⚠️  export falhou para $slug"
+    return 1
+  fi
+
+  rm -rf "$target_dir"
+  mkdir -p "$target_dir"
+  cp -r "$app_dir/dist"/. "$target_dir/"
+  rm -rf "$app_dir/dist"
+  echo "   ✅ hub/public/apps/$slug"
+}
+
+for entry in "${APPS[@]}"; do
+  slug="${entry%%:*}"
+  dir="${entry#*:}"
+  wanted "$slug" || continue
+  app_dir="$REPO_ROOT/$dir"
+
+  echo "📦 $slug ($dir)"
   if [ ! -f "$app_dir/package.json" ]; then
-    echo "   ⚠️  Skipping — no package.json found"
+    echo "   ⚠️  sem package.json, pulando"
     continue
   fi
-
-  # Install deps if needed
   if [ ! -d "$app_dir/node_modules" ]; then
-    echo "   📥 Installing dependencies..."
     (cd "$app_dir" && npm install --silent 2>&1 | tail -1)
   fi
-
-  # Export for web
-  echo "   🔨 Exporting for web..."
-  (cd "$app_dir" && npx expo export --platform web 2>&1 | tail -3)
-
-  # Copy dist to hub/public/apps/<slug>
-  dist_dir="$app_dir/dist"
-  if [ -d "$dist_dir" ]; then
-    rm -rf "$target_dir"
-    mkdir -p "$target_dir"
-    cp -r "$dist_dir"/* "$target_dir/"
-
-    # Fix asset paths: convert absolute paths (/_expo/) to relative (./_expo/)
-    # so Expo exports work correctly inside iframes
-    html_file="$target_dir/index.html"
-    if [ -f "$html_file" ]; then
-      sed -i 's|src="/_expo/|src="./_expo/|g' "$html_file"
-      echo "   ✅ Copied to hub/public/apps/$slug/ (paths fixed)"
-    else
-      echo "   ✅ Copied to hub/public/apps/$slug/"
-    fi
-  else
-    echo "   ⚠️  No dist/ found after export — skipping copy"
-  fi
-
-  echo ""
+  export_app "$slug" "$app_dir"
 done
 
-echo "────────────────────────────────────"
-echo "🎉 All apps exported! Ready to build hub."
+echo "🎉 Apps exportados para hub/public/apps"

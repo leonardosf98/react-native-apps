@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Switch, Text, TextInput, View } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import {
   DEEP,
   ERROR,
@@ -52,34 +53,39 @@ function Campo({ label, erro, ...props }) {
   );
 }
 
-function Opcoes({ label, opcoes, valor, onSelecionar, erro }) {
+function Selecao({ label, opcoes, valor, onSelecionar, erro }) {
   return (
     <View style={{ marginBottom: 18 }}>
       <Rotulo>{label}</Rotulo>
-      <View style={{ flexDirection: "row", flexWrap: "wrap", marginHorizontal: -4 }}>
-        {opcoes.map((opcao) => {
-          const ativo = opcao === valor;
-          return (
-            <Pressable
-              key={opcao}
-              onPress={() => onSelecionar(opcao)}
-              accessibilityRole="radio"
-              accessibilityState={{ selected: ativo }}
-              style={({ pressed }) => ({
-                margin: 4,
-                paddingHorizontal: 14,
-                paddingVertical: 10,
-                borderRadius: 999,
-                borderWidth: 2,
-                borderColor: ativo ? GREEN : erro ? "#FCA5A5" : LINE,
-                backgroundColor: ativo ? GREEN : "#FFFFFF",
-                opacity: pressed ? 0.8 : 1,
-              })}
-            >
-              <Text style={{ color: ativo ? "#FFFFFF" : TEXT, fontSize: 14, fontWeight: "700" }}>{opcao}</Text>
-            </Pressable>
-          );
-        })}
+      <View
+        style={{
+          backgroundColor: MINT,
+          borderColor: erro ? ERROR : LINE,
+          borderRadius: 14,
+          borderWidth: 2,
+          overflow: "hidden",
+        }}
+      >
+        <Picker
+          selectedValue={valor}
+          onValueChange={onSelecionar}
+          accessibilityLabel={label}
+          dropdownIconColor={GREEN}
+          style={{
+            color: valor ? TEXT : MUTED,
+            fontSize: 17,
+            fontWeight: "600",
+            backgroundColor: "transparent",
+            borderWidth: 0,
+            paddingHorizontal: Platform.OS === "web" ? 14 : 0,
+            height: Platform.OS === "ios" ? undefined : 52,
+          }}
+        >
+          <Picker.Item label="Selecione..." value="" color={MUTED} />
+          {opcoes.map((opcao) => (
+            <Picker.Item key={opcao} label={opcao} value={opcao} />
+          ))}
+        </Picker>
       </View>
       <Erro mensagem={erro} />
     </View>
@@ -208,8 +214,8 @@ export default function FormularioScreen({ navigation }) {
               maxLength={3}
               erro={erros.idade}
             />
-            <Opcoes label="Sexo" opcoes={SEXOS} valor={sexo} onSelecionar={atualizar(setSexo, "sexo")} erro={erros.sexo} />
-            <Opcoes
+            <Selecao label="Sexo" opcoes={SEXOS} valor={sexo} onSelecionar={atualizar(setSexo, "sexo")} erro={erros.sexo} />
+            <Selecao
               label="Escolaridade"
               opcoes={ESCOLARIDADES}
               valor={escolaridade}
